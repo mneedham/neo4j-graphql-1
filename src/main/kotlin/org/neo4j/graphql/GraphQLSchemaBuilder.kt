@@ -110,7 +110,7 @@ class GraphQLSchemaBuilder {
                     .build()
         }
     }
-    
+
     fun toGraphQLObjectType(metaData: MetaData, interfaceDefinitions: Map<String, GraphQLInterfaceType>) : GraphQLObjectType {
         var builder: GraphQLObjectType.Builder = newObject()
                 .name(metaData.type)
@@ -155,7 +155,7 @@ class GraphQLSchemaBuilder {
 
         builder = builder.typeResolver { cypherResult ->
             val row = cypherResult as Map<String, Any>?
-            val allLabels = row?.get("_labels") as List<String>? // so we have to add "_labels" to each node's map projection n { _labels: labels(n), ... } or we have to hard-code it from the generator
+            val allLabels = row?.get("_labels") as List<String>?
             // we also have to add the interfaces to the mutation on create
             val firstRemainingLabel: String? = allLabels?.filterNot { it == interfaceName }?.firstOrNull() // would be good to have a "Node" superlabel? like Relay has
 
@@ -261,16 +261,7 @@ class GraphQLSchemaBuilder {
                 .argument(toArguments(prop.parameters?.values))
                 .build()
     }
-
-//    private fun addInterfaces(md: MetaData, builder: GraphQLObjectType.Builder): GraphQLObjectType.Builder {
-//        var newBuilder = builder
-//        for (label in md.labels) {
-//            val metaData = GraphSchemaScanner.getMetaData(label)!!
-//            newBuilder = newBuilder.withInterface(toGraphQLInterface(metaData))
-//        }
-//        return newBuilder
-//    }
-
+    
     companion object {
         class GraphQLSchemaWithDirectives(queryType: GraphQLObjectType, mutationType: GraphQLObjectType, dictionary: Set<GraphQLType>, newDirectives : List<GraphQLDirective>)
             : GraphQLSchema(queryType, mutationType, dictionary) {

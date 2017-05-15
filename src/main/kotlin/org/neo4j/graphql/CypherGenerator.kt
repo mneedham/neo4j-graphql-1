@@ -146,10 +146,6 @@ class Cypher31Generator : CypherGenerator() {
         }
     }
 
-    // it might be even correct, as we have the supertype stuff there
-// can you try that?
-    // I just wanted to see what is in this selectionset
-
     fun nestedPatterns(metaData: MetaData, variable: String, selectionSet: SelectionSet, orderBys: MutableList<Pair<String,Boolean>>): String {
         return projectSelectionFields(metaData, variable, selectionSet, orderBys).map{ pair ->
             val (fieldName, projection) = pair
@@ -299,11 +295,7 @@ class Cypher30Generator : CypherGenerator() {
     }
 
     fun projectSelectionFields(md: MetaData, variable: String, selectionSet: SelectionSet): List<Pair<String, String>> {
-
         val selections = selectionSet.selections
-
-
-        // but it should be the same as field, it has an inline selction set
 
         return projectFragments(md, selections, variable) +
                 selections.filterIsInstance<Field>().map{ projectField(md, variable, it) }.filterNotNull()
